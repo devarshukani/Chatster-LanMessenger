@@ -1,4 +1,4 @@
-# Chatster - Lan Chat Application
+# Chatster - Lan Messaging Application
 
 Chatster is a Desktop Lan Chat Application that enables users to interact with each other users.
 Users connected to same local network can chat with each other without any internet.
