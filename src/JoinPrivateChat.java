@@ -10,6 +10,7 @@ public class JoinPrivateChat {
     String port;
     int con = 1;
     int close = 0;
+    String username;
 
     Socket socket;
 
@@ -19,7 +20,11 @@ public class JoinPrivateChat {
     TextArea taContent;
     JTextField tfMessage;
 
+
     JoinPrivateChat(JPanel jpcPanel, JTabbedPane tp){
+
+        GetSetData obj = new GetSetData();
+
         // IP Address Label
         JLabel lblIPadd = new JLabel("IP Address");
         lblIPadd.setBounds(10, 10, 80, 25);
@@ -58,7 +63,7 @@ public class JoinPrivateChat {
         taContent = new TextArea("",0,0,TextArea.SCROLLBARS_VERTICAL_ONLY);
         taContent.setEditable(false);
         taContent.setBounds(10, 45, 660, 315);
-        taContent.setFont(new Font(Font.MONOSPACED,Font.PLAIN,12));
+        taContent.setFont(new Font(Font.MONOSPACED,Font.PLAIN,obj.getFontSize()));
         jpcPanel.add(taContent);
 
         tfMessage = new JTextField();
@@ -108,18 +113,24 @@ public class JoinPrivateChat {
         });
 
 
+        String username = obj.getUsername();
+
         btnSend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!tfMessage.getText().equals("")){
                     taContent.append("You : " + tfMessage.getText() + "\n");
-                    out.println(System.getProperty("user.name") + " : " + tfMessage.getText());
+                    out.println(username + " : " + tfMessage.getText());
                     tfMessage.setText("");
                 }
             }
         });
 
+
+
     }
+
+
 
     public void joinServer(){
         try {

@@ -5,19 +5,23 @@ import java.awt.event.*;
 public class Settings {
 
     Settings(){
+
+        GetSetData obj = new GetSetData();
+
         JFrame f = new JFrame("Settings");
         f.setSize(290,200);
         f.setLocationRelativeTo(null);
         f.setLayout(null);
         f.setResizable(false);
 
-        // Username
+        // Username Label
         JLabel lblUsername = new JLabel("Username");
         lblUsername.setBounds(20,30,100,25);
         lblUsername.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,11));
         f.add(lblUsername);
 
-        JTextField tfUsername = new JTextField(System.getProperty("user.name"));
+        // Username Text field
+        JTextField tfUsername = new JTextField();
         tfUsername.setBounds(130,30,120,25);
         f.add(tfUsername);
 
@@ -27,8 +31,17 @@ public class Settings {
         lblFont.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,11));
         f.add(lblFont);
 
+        // Message Font Size spinner
         JSpinner sFont = new JSpinner();
         sFont.setBounds(130,65,60,25);
+        sFont.setModel(new SpinnerNumberModel(15,10,20,1));
+
+        if ( sFont.getEditor() instanceof JSpinner.DefaultEditor ) {
+            JSpinner.DefaultEditor editor = ( JSpinner.DefaultEditor ) sFont.getEditor();
+            editor.getTextField().setEnabled( true );
+            editor.getTextField().setEditable( false );
+        }
+
         f.add(sFont);
 
         // Update Button
@@ -36,6 +49,9 @@ public class Settings {
         btnUpdate.setBounds(90,110,80,26);
         f.add(btnUpdate);
 
+        // Retrieve previously set data
+        tfUsername.setText(obj.getUsername());
+        sFont.setValue(obj.getFontSize());
 
         f.setVisible(true);
 
@@ -48,10 +64,16 @@ public class Settings {
                 f.dispose();
             }
         });
-    }
 
-    public static void main(String[] args) {
-        new Settings();
+        btnUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                obj.setUsername(tfUsername.getText());
+                obj.setFontSize(sFont.getValue().toString());
+
+                f.dispose();
+            }
+        });
     }
 
 }

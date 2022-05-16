@@ -18,7 +18,11 @@ public class CreatePrivateChat {
     TextArea taContent;
     JTextField tfMessage;
 
+
+
     CreatePrivateChat(JPanel cpcPanel, JTabbedPane tp){
+
+        GetSetData obj = new GetSetData();
 
         String ipaddress = null;
         try {
@@ -70,7 +74,7 @@ public class CreatePrivateChat {
         taContent = new TextArea("",0,0,TextArea.SCROLLBARS_VERTICAL_ONLY);
         taContent.setEditable(false);
         taContent.setBounds(10, 45, 660, 315);
-        taContent.setFont(new Font(Font.MONOSPACED,Font.PLAIN,12));
+        taContent.setFont(new Font(Font.MONOSPACED,Font.PLAIN,obj.getFontSize()));
         cpcPanel.add(taContent);
 
         tfMessage = new JTextField();
@@ -117,18 +121,24 @@ public class CreatePrivateChat {
         });
 
 
+        String username = obj.getUsername();
+
         btnSend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!tfMessage.getText().equals("")){
                     taContent.append("You : " + tfMessage.getText() + "\n");
-                    out.println(System.getProperty("user.name") + " : " + tfMessage.getText());
+                    out.println(username + " : " + tfMessage.getText());
                     tfMessage.setText("");
                 }
             }
         });
 
+
+
     }
+
+
 
     public void startServer(JTabbedPane tp){
 
