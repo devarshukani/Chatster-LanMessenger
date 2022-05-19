@@ -25,10 +25,11 @@ public class CreatePrivateChat {
         GetSetData obj = new GetSetData();
 
         String ipaddress = null;
-        try {
-            InetAddress myIP = InetAddress.getLocalHost();
-            ipaddress = myIP.getHostAddress();
-        } catch (Exception e) {
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 443);
+            ipaddress = socket.getLocalAddress().getHostAddress();
+        }
+        catch (Exception e){
             e.printStackTrace();
         }
 

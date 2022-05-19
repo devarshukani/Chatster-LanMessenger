@@ -83,8 +83,44 @@ public class Main {
         miGroupChat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+<<<<<<< Updated upstream
                 JOptionPane.showMessageDialog(f, "Group Chat feature is not available  ",
                         "Group Chat", JOptionPane.INFORMATION_MESSAGE);
+=======
+
+                int messageType = JOptionPane.QUESTION_MESSAGE;
+                String[] options = {"Create Group Chat", "Join Group Chat"};
+                int code = JOptionPane.showOptionDialog(f,
+                        "Do you want to create or join chat ?",
+                        "Group Chat", 0, messageType,
+                        null, options, null);
+
+
+                // Create group chat
+                if(code == 0 ){
+                    JPanel cgcPanel=new JPanel();
+                    cgcPanel.setLayout(null);
+                    cgcPanel.setBackground(Color.LIGHT_GRAY);
+
+                    CreateGroupChat obj = new CreateGroupChat();
+                    obj.CreateGroupChatSwing(cgcPanel, tp);
+
+                    tp.add("Create Group Chat",cgcPanel);
+
+                }
+                // Join group chat
+                else if(code == 1){
+                    JPanel jgcPanel=new JPanel();
+                    jgcPanel.setLayout(null);
+                    jgcPanel.setBackground(Color.LIGHT_GRAY);
+
+                    JoinGroupChat obj = new JoinGroupChat();
+                    obj.JoinGroupChatSwing(jgcPanel, tp);
+
+                    tp.add("Join Group Chat",jgcPanel);
+                }
+
+>>>>>>> Stashed changes
             }
         });
 
