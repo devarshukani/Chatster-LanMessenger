@@ -83,10 +83,6 @@ public class Main {
         miGroupChat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-<<<<<<< Updated upstream
-                JOptionPane.showMessageDialog(f, "Group Chat feature is not available  ",
-                        "Group Chat", JOptionPane.INFORMATION_MESSAGE);
-=======
 
                 int messageType = JOptionPane.QUESTION_MESSAGE;
                 String[] options = {"Create Group Chat", "Join Group Chat"};
@@ -120,7 +116,6 @@ public class Main {
                     tp.add("Join Group Chat",jgcPanel);
                 }
 
->>>>>>> Stashed changes
             }
         });
 

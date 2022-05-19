@@ -11,12 +11,9 @@ public class JoinPrivateChat {
     int con = 1;
     int close = 0;
     String username;
-
     Socket socket;
-
     BufferedReader br;
     PrintWriter out;
-
     TextArea taContent;
     JTextField tfMessage;
 

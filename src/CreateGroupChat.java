@@ -6,18 +6,11 @@ import java.net.*;
 import java.util.Scanner;
 
 public class CreateGroupChat {
-
-
-
-    int con = 1;
-    int close = 0;
     String port="7777";
-
-    static ServerSocket ss;
-    static DataInputStream dis;
-    static DataOutputStream dos;
-    static Scanner in = new Scanner(System.in);
-    public static user users[] = new user[10];
+     ServerSocket ss;
+     DataInputStream dis;
+     DataOutputStream dos;
+    public user users[] = new user[10];
     public static int totalClientsOnline=0;
 
 
@@ -84,7 +77,14 @@ public class CreateGroupChat {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                close = 1;
+                try {
+                    ss.close();
+                    dos.close();
+                    dis.close();
+                }
+                catch (Exception ex){
+                    ex.printStackTrace();
+                }
 
                 tp.remove(tp.getSelectedIndex());
 
@@ -110,6 +110,8 @@ public class CreateGroupChat {
         Runnable t = () ->{
             try
             {
+
+
                 ss = new ServerSocket(Integer.parseInt(port));
                 taContent.append("Server is Running...  \n");
                 for(int i=0;i<10;i++)
@@ -185,12 +187,7 @@ class user extends Thread
             try
             {
                 message = userDIS.readUTF();
-                if(message.equals("46511231dsfdsfsd#@$#$#@^$%#@*$#^")){
-//                    tirth.receiveAndSendFileToAll(userSocket, userID);
-                }
-                else{
-                    tirth.sendMessageToAll(message);
-                }
+                tirth.sendMessageToAll(message);
             }
 
             catch(Exception e)
