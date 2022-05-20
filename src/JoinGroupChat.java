@@ -3,22 +3,23 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class JoinGroupChat {
 
     String ip;
     String port;
-    int close = 0;
+    static int alreadyConnected = 0;
     static TextArea taContent;
     JTextField tfMessage;
     JTextField tfIPadd;
-
+    static Scanner in = new Scanner(System.in);
     static DataOutputStream dos;
     static DataInputStream dis;
     static Socket s;
     static boss server;
 
-    static String msgHistory = new String("") ;
+    static String msgHistory = new String("");
 
     void JoinGroupChatSwing(JPanel jgcPanel, JTabbedPane tp){
 
@@ -84,25 +85,18 @@ public class JoinGroupChat {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-//                try {
+                try {
 //                    out.println("Client Ended The Chat");
-//                }
-//                catch (Exception ex){
-//                    ex.printStackTrace();
-//                }
-
-                close = 1;
-
-                try{
-                    dos.close();
-                    dis.close();
                     s.close();
+                    dis.close();
+                    dos.close();
                 }
                 catch (Exception ex){
                     ex.printStackTrace();
                 }
 
-                msgHistory = "";
+                alreadyConnected = 0;
+
                 tp.remove(tp.getSelectedIndex());
             }
         });
@@ -117,7 +111,15 @@ public class JoinGroupChat {
                 ip = tfIPadd.getText();
                 port = tfPort.getText();
 
-                joinServer();
+                if(alreadyConnected == 0){
+                    joinServer();
+                }
+                else{
+                    Frame f = new Frame();
+                    JOptionPane.showMessageDialog(f, "You can join only one server at a time!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    tp.remove(tp.getSelectedIndex());
+                }
             }
         });
 
@@ -133,20 +135,15 @@ public class JoinGroupChat {
                 {
                     dos.writeUTF(username + " : " + msg);
                 }
-                catch(IOException ex){
-                    ex.printStackTrace();
-                }
+                catch(IOException ex){}
             }
         });
     }
 
-
-
     public void joinServer(){
         tfMessage .setEditable(true);
 
-        try
-        {
+        try {
             s = new Socket(ip, Integer.parseInt(port));
             dos = new DataOutputStream(s.getOutputStream());
             dis = new DataInputStream(s.getInputStream());
@@ -155,20 +152,22 @@ public class JoinGroupChat {
             Thread t = new Thread(server);
             t.start();
 
+            taContent.append("Connection Established with Server");
+            msgHistory = msgHistory + "Connection Established with Server \n";
+            alreadyConnected = 1;
         }
 
-        catch(IOException e)
-        {
+        catch(IOException e) {
+            taContent.append("Connecting to server failed :( \n");
             System.out.println("Server unavailable to connect. Press Ctrl+C to exit..");
         }
 
     }
 
-    public static void updateMessageArea(String msg)
-    {
-        msgHistory = msgHistory + "\n";
-        msgHistory = msgHistory + msg;
+    public static void updateMessageArea(String msg) {
+        msgHistory = msgHistory + msg + "\n";
         taContent.setText(msgHistory);
+        taContent.append("");
 //        System.out.println("msgHistory--------------------------------------");
 //        System.out.println(msgHistory);
 //        System.out.println("msg-------------------------------------");
@@ -197,11 +196,10 @@ public class JoinGroupChat {
 
 }
 
-
 class boss extends Thread
 {
-    TextArea taContent;
     DataInputStream disServer;
+    String secretCode = new String("46511231dsfdsfsd#@$#$#@^$%#@*$#^");
 
     public boss(DataInputStream z)
     {
@@ -218,6 +216,7 @@ class boss extends Thread
                 String str = disServer.readUTF();
                 JoinGroupChat.updateMessageArea(str);
             }
+
             catch(IOException e)
             {
                 System.out.println("Exception in run method. Reconnecting..");
@@ -229,4 +228,3 @@ class boss extends Thread
         }
     }
 }
-

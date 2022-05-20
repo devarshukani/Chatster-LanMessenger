@@ -7,14 +7,15 @@ import java.util.Scanner;
 
 public class CreateGroupChat {
     String port="7777";
-     ServerSocket ss;
-     DataInputStream dis;
-     DataOutputStream dos;
-    public user users[] = new user[10];
+    public TextArea taContent;
+    static ServerSocket ss;
+    static DataInputStream dis;
+    static DataOutputStream dos;
+    static Scanner in = new Scanner(System.in);
+    public static user users[] = new user[10];
     public static int totalClientsOnline=0;
 
 
-    public TextArea taContent;
     void CreateGroupChatSwing(JPanel cpcPanel, JTabbedPane tp){
 
         GetSetData obj = new GetSetData();
@@ -77,10 +78,8 @@ public class CreateGroupChat {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                try {
+                try{
                     ss.close();
-                    dos.close();
-                    dis.close();
                 }
                 catch (Exception ex){
                     ex.printStackTrace();
@@ -99,32 +98,36 @@ public class CreateGroupChat {
 
                 port = tfPort.getText();
 
-                startServer();
+                startServer(tp);
             }
         });
 
     }
 
-    public void startServer(){
+    public void startServer(JTabbedPane tp){
 
         Runnable t = () ->{
             try
             {
-
-
                 ss = new ServerSocket(Integer.parseInt(port));
-                taContent.append("Server is Running...  \n");
+                taContent.append("Server is Running ... \n");
                 for(int i=0;i<10;i++)
                 {
-                    users[i] = new user(i+1,ss.accept(), taContent);
+                    users[i] = new user(i+1,ss.accept(),taContent);
                     totalClientsOnline++;
                 }
 
             }
 
-            catch(Exception e)
+            catch(BindException e)
             {
-                System.out.println("Exception caught in main due to user connection loss...");
+                Frame f = new Frame();
+                JOptionPane.showMessageDialog(f, "You can create only one server at a time!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                tp.remove(tp.getSelectedIndex());
+            }
+            catch (Exception e){
+                e.printStackTrace();
             }
         };
         new Thread(t).start();
@@ -133,18 +136,19 @@ public class CreateGroupChat {
 
     public void sendMessageToAll(String msg)
     {
-        for(int i=0;i<totalClientsOnline;i++)
+        for(int c=0;c<totalClientsOnline;c++)
         {
             try
             {
-                users[i].sendMessage(msg);
+                users[c].sendMessage(msg);
             }
 
             catch(Exception e){}
         }
     }
-
 }
+
+
 
 class user extends Thread
 {
@@ -157,7 +161,7 @@ class user extends Thread
     OutputStream os;
 
 
-    public user(int id,Socket a, TextArea taContent)
+    public user(int id,Socket a,TextArea taContent)
     {
         try
         {
@@ -166,7 +170,7 @@ class user extends Thread
             userDIS = new DataInputStream(userSocket.getInputStream());
             userDOS = new DataOutputStream(userSocket.getOutputStream());
             System.out.println(userID+ " client connected.");
-            taContent.append(userID+ " client connected  \n");
+            taContent.append(userID+ " client connected. \n");
 
             t = new Thread(this);
             t.start();
@@ -198,7 +202,6 @@ class user extends Thread
         }
     }
 
-
     public void sendMessage(String s)
     {
         try
@@ -208,32 +211,6 @@ class user extends Thread
 
         catch(Exception e){}
     }
-
-
-    public void sendFile(byte [] mybytearray)
-    {
-        try{
-
-            os = userSocket.getOutputStream();
-            userDOS.flush();
-            os.flush();
-            userDOS.writeUTF("46511231dsfdsfsd#@$#$#@^$%#@*$#^");
-            os.write(mybytearray,0,mybytearray.length);
-
-            userDOS.flush();
-
-            os.flush();
-            System.out.println("File forwarded.");
-
-            //if (os != null)
-            //   os.close();
-
-        }
-        catch(Exception e)
-        {
-            System.out.println("Exception in sendFile() method.");
-        }
-
-    }
-
 }
+
+
