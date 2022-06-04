@@ -10,11 +10,6 @@ Concepts used : Socket Programming, Swing GUI, AWT, Threading
 - Private Chat
 - Settings
 
-
-## Future Plans
-
-- File Sharing
-
 ## Getting Started
 1) Open the main directory of project in CMD.
 2) Run the following command
