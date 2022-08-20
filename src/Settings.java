@@ -9,6 +9,7 @@ public class Settings {
         GetSetData obj = new GetSetData();
 
         JFrame f = new JFrame("Settings");
+        f.setIconImage(Toolkit.getDefaultToolkit().getImage("Assets/Settings.png"));
         f.setSize(290,200);
         f.setLocationRelativeTo(null);
         f.setLayout(null);
