@@ -1,3 +1,4 @@
+import javax.lang.model.type.NullType;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -85,9 +86,9 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
 
                 int messageType = JOptionPane.QUESTION_MESSAGE;
-                String[] options = {"Create Group Chat", "Join Group Chat"};
+                String[] options = {"Create", "Join"};
                 int code = JOptionPane.showOptionDialog(f,
-                        "Do you want to create or join chat ?",
+                        "Do you want to Create or Join Group Chat ?",
                         "Group Chat", 0, messageType,
                         null, options, null);
 
@@ -124,9 +125,9 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int messageType = JOptionPane.QUESTION_MESSAGE;
-                String[] options = {"Create Private Chat", "Join Private Chat"};
+                String[] options = {"Create", "Join"};
                 int code = JOptionPane.showOptionDialog(f,
-                        "Do you want to create or join chat ?",
+                        "Do you want to Create or Join Private Chat ?",
                         "Private Chat", 0, messageType,
                         null, options, null);
 
@@ -198,11 +199,21 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
 
             e.printStackTrace();
         }
+
+        // Set username for the first time as username of Computer
+        GetSetData obj = new GetSetData();
+        String uname = obj.getUsername();
+        if(uname == null){
+            obj.setUsername(System.getProperty("user.name"));
+        }
+
+        // Calls constructor of Main class
         new Main();
     }
 }
