@@ -20,6 +20,21 @@ public class JoinPrivateChat {
 
     JoinPrivateChat(JPanel jpcPanel, JTabbedPane tp){
 
+        // Check for connected to network or not
+        String ipadd = null;
+        try(final DatagramSocket socket = new DatagramSocket()){
+            socket.connect(InetAddress.getByName("8.8.8.8"), 443);
+            ipadd = socket.getLocalAddress().getHostAddress();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Frame f = new Frame();
+            JOptionPane.showMessageDialog(f, "You are not Connected to any Network",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            tp.remove(tp.getSelectedIndex());
+        }
+
+
         GetSetData obj = new GetSetData();
 
         // IP Address Label
@@ -28,7 +43,7 @@ public class JoinPrivateChat {
         jpcPanel.add(lblIPadd);
 
         // IP Address Text Box
-        JTextField tfIPadd = new JTextField("127.0.0.1");
+        JTextField tfIPadd = new JTextField();
         tfIPadd.setBounds(65, 10, 100, 25);
         jpcPanel.add(tfIPadd);
 

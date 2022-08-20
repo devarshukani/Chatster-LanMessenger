@@ -27,6 +27,10 @@ public class CreateGroupChat {
         }
         catch (Exception e){
             e.printStackTrace();
+            Frame f = new Frame();
+            JOptionPane.showMessageDialog(f, "You are not Connected to any Network",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            tp.remove(tp.getSelectedIndex());
         }
 
         // IP Address Label
