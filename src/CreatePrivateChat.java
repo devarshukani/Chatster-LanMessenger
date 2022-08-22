@@ -139,6 +139,22 @@ public class CreatePrivateChat {
             }
         });
 
+        // send message when enter is pressed after typing the message
+        Action action = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                System.out.println("Enter pressed");
+                if(!tfMessage.getText().equals("")){
+                    taContent.append("You : " + tfMessage.getText() + "\n");
+                    out.println(username + " : " + tfMessage.getText());
+                    tfMessage.setText("");
+                }
+            }
+        };
+        tfMessage.addActionListener( action );
+
 
 
     }
