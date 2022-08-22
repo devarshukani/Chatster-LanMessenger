@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.*;
 
 public class Main {
@@ -205,7 +207,16 @@ public class Main {
 
             e.printStackTrace();
         }
-
+        String path = System.getProperty("user.home") + File.separator + ".lanMessenger";
+        boolean runningForFirstTime = new File(path).mkdir();
+        File configFile = new File(path + File.separator + "config.properties");
+        if (runningForFirstTime) {
+            try {
+                configFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         // Set username for the first time as username of Computer
         GetSetData obj = new GetSetData();
         String uname = obj.getUsername();
