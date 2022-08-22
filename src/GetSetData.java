@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class GetSetData {
 
-    String path = System.getProperty("user.home") + File.separator + ".messenger";
+    String path = System.getProperty("user.home") + File.separator + ".lanMessenger";
     File configFile = new File(path + File.separator + "config.properties");
     Properties properties = new Properties();
     FileReader reader;
