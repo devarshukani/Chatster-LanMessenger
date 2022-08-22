@@ -1,71 +1,57 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Properties;
 
 public class GetSetData {
 
-
+    String path = System.getProperty("user.home") + File.separator + ".lanMessenger";
+    File configFile = new File(path + File.separator + "config.properties");
+    Properties properties = new Properties();
+    FileReader reader;
+    FileWriter writer;
     public String getUsername(){
-        File file = new File("Data/Username.txt");
-        BufferedReader brfile = null;
         try {
-            brfile = new BufferedReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        String username;
-
-        try {
-            username = brfile.readLine();
-            return username;
+            reader = new FileReader(configFile);
+            properties.load(reader);
+            return properties.getProperty("USERNAME");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     public int getFontSize(){
-        File file = new File("Data/FontSize.txt");
-        BufferedReader brfile = null;
         try {
-            brfile = new BufferedReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        String fontsize;
-
-        try {
-            fontsize = brfile.readLine();
-            return Integer.parseInt(fontsize);
+            reader = new FileReader(configFile);
+            properties.load(reader);
+            if (properties.getProperty("FONTSIZE") != null)
+                return Integer.parseInt(properties.getProperty("FONTSIZE"));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return 12;
     }
 
-    public void setUsername(String text){
-
-        // Defining the file name of the file
-        Path fileName = Path.of("Data/Username.txt");
-
+    public void setUsername(String username){
+        properties.setProperty("USERNAME", username);
         try {
-            Files.writeString(fileName, text);
+            writer = new FileWriter(configFile);
+            properties.store(writer, null);
+            writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    public void setFontSize(String text){
+    public void setFontSize(String fontSize){
 
-        // Defining the file name of the file
-        Path fileName = Path.of("Data/FontSize.txt");
-
+        properties.setProperty("FONTSIZE", fontSize);
         try {
-            Files.writeString(fileName, text);
+            writer = new FileWriter(configFile);
+            properties.store(writer, null);
+            writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
