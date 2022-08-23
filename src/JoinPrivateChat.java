@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.TimeUnit;
 
 public class JoinPrivateChat {
 
@@ -165,7 +166,7 @@ public class JoinPrivateChat {
         try {
             taContent.append("Sending Request to Server"+ "\n");
             socket = new Socket(ip,Integer.parseInt(port));
-            taContent.append("Connection Established"+ "\n");
+            taContent.append("Connected to Server"+ "\n");
 
             tfMessage.setEditable(true);
 
@@ -175,17 +176,24 @@ public class JoinPrivateChat {
             startReading();
             startWriting();
 
+            TimeUnit.SECONDS.sleep(1);
+            taContent.setText("");
+            GetSetData u = new GetSetData();
+            out.println("Connection Established with "+u.getUsername());
+
         }
         catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void startReading() {
         Runnable r3 = ()->{
-            taContent.append("Start Reading "+ "\n");
+            taContent.append("Started Reading from Server "+ "\n");
             try {
                 while(con==1){
                     String msg = br.readLine();
@@ -208,7 +216,7 @@ public class JoinPrivateChat {
 
     public void startWriting() {
         Runnable r4 = ()->{
-            taContent.append("Start Writing"+ "\n");
+            taContent.append("Start Writing from Server"+ "\n");
             try {
                 while(!socket.isClosed()){
 

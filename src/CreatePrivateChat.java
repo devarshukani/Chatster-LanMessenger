@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.TimeUnit;
 
 public class CreatePrivateChat {
 
@@ -168,7 +169,7 @@ public class CreatePrivateChat {
                 server = new ServerSocket(Integer.parseInt(port));
                 taContent.append("Server is Ready to Connect" + "\n");
                 socket = server.accept();
-                taContent.append("Connected to client" + "\n");
+                taContent.append("Connected to Client" + "\n");
 
                 tfMessage.setEditable(true);
 
@@ -178,6 +179,12 @@ public class CreatePrivateChat {
                 startReading();
                 startWriting();
 
+
+                TimeUnit.SECONDS.sleep(1);
+                taContent.setText("");
+                GetSetData u = new GetSetData();
+                out.println("Connection Established with "+u.getUsername());
+
             } catch (BindException ex){
                 Frame f = new Frame();
                 JOptionPane.showMessageDialog(f, "You can create only one server at a time!",
@@ -185,6 +192,8 @@ public class CreatePrivateChat {
                 tp.remove(tp.getSelectedIndex());
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         };
         new Thread(t).start();
@@ -195,7 +204,7 @@ public class CreatePrivateChat {
     public void startReading() {
 
         Runnable r1 = () -> {
-            taContent.append("Start Reading " + "\n");
+            taContent.append("Started Reading from Client" + "\n");
 
             try {
                 while (con == 1) {
@@ -222,7 +231,7 @@ public class CreatePrivateChat {
 
     public void startWriting() {
         Runnable r2 = () -> {
-            taContent.append("Start Writing" + "\n");
+            taContent.append("Started Writing from Client" + "\n");
 
             try {
                 while (!socket.isClosed()) {
