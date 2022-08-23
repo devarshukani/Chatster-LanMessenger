@@ -1,0 +1,5 @@
+- [x] Send Message when "Enter" key is pressed on the keyboard instead of requiring to press the send button.
+- [ ] Send Notification to the Client when the server is closing instead of abruptly closing the connection socket.
+- [ ] Check if the username exists in the group channel before entering the user and show error if it exists.
+- [ ] When a client leaves the server the other clients should be notified
+- [ ] Fix the UI to make it attractive.

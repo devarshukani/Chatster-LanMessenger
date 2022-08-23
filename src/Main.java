@@ -9,6 +9,8 @@ import java.lang.*;
 
 public class Main {
 
+    public static String path = System.getProperty("user.home") + File.separator + ".lanMessenger";
+    public static File configFile = new File(path + File.separator + "config.properties");
     Main(){
         JFrame f = new JFrame("Chatster | Lan Messaging Application");
         f.setIconImage(Toolkit.getDefaultToolkit().getImage("Assets/chatster.png"));
@@ -207,9 +209,7 @@ public class Main {
 
             e.printStackTrace();
         }
-        String path = System.getProperty("user.home") + File.separator + ".lanMessenger";
         boolean runningForFirstTime = new File(path).mkdir();
-        File configFile = new File(path + File.separator + "config.properties");
         if (runningForFirstTime) {
             try {
                 configFile.createNewFile();
