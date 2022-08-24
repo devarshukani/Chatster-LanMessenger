@@ -176,7 +176,7 @@ public class CreatePrivateChat {
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream());
 
-                startReading();
+                startReading(tp);
                 startWriting();
 
 
@@ -201,8 +201,7 @@ public class CreatePrivateChat {
         new Thread(t).interrupt();
     }
 
-    public void startReading() {
-
+    public void startReading(JTabbedPane tp) {
         Runnable r1 = () -> {
             taContent.append("Started Reading from Client" + "\n");
 
@@ -210,14 +209,18 @@ public class CreatePrivateChat {
                 while (con == 1) {
                     String msg = br.readLine();
                     if (msg.equals("Client Ended The Chat")) {
-                        taContent.append("Client Ended The Chat" + "\n");
+//                        taContent.append("Client Ended The Chat" + "\n");
+                        Frame f = new Frame();
+                        JOptionPane.showMessageDialog(f, "Client Ended the Chat",
+                                "Private Chat", JOptionPane.INFORMATION_MESSAGE);
+                        tp.remove(tp.getSelectedIndex());
                         tfMessage.setEditable(false);
                         server.close();
                         socket.close();
                         break;
+
                     }
                     taContent.append(msg + "\n");
-
                 }
 
             } catch (IOException e) {

@@ -121,7 +121,7 @@ public class JoinPrivateChat {
                 ip = tfIPadd.getText();
                 port = tfPort.getText();
 
-                joinServer();
+                joinServer(tp);
             }
         });
 
@@ -162,7 +162,7 @@ public class JoinPrivateChat {
 
 
 
-    public void joinServer(){
+    public void joinServer(JTabbedPane tp){
         try {
             taContent.append("Sending Request to Server"+ "\n");
             socket = new Socket(ip,Integer.parseInt(port));
@@ -173,7 +173,7 @@ public class JoinPrivateChat {
             br =  new BufferedReader(new InputStreamReader( socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream());
 
-            startReading();
+            startReading(tp);
             startWriting();
 
             TimeUnit.SECONDS.sleep(1);
@@ -191,14 +191,18 @@ public class JoinPrivateChat {
         }
     }
 
-    public void startReading() {
+    public void startReading(JTabbedPane tp) {
         Runnable r3 = ()->{
             taContent.append("Started Reading from Server "+ "\n");
             try {
                 while(con==1){
                     String msg = br.readLine();
                     if(msg.equals("Server Ended The Chat")){
-                        taContent.append("Server Ended The Chat"+ "\n");
+//                        taContent.append("Server Ended The Chat"+ "\n");
+                        Frame f = new Frame();
+                        JOptionPane.showMessageDialog(f, "Server Ended the Chat",
+                                "Private Chat", JOptionPane.INFORMATION_MESSAGE);
+                        tp.remove(tp.getSelectedIndex());
                         tfMessage.setEditable(false);
                         socket.close();
                         break;
