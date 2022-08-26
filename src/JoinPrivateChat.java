@@ -17,8 +17,7 @@ public class JoinPrivateChat {
     PrintWriter out;
     TextArea taContent;
     JTextField tfMessage;
-
-
+    int tabindex;
     JoinPrivateChat(JPanel jpcPanel, JTabbedPane tp){
 
         // Check for connected to network or not
@@ -90,6 +89,11 @@ public class JoinPrivateChat {
         btnSend.setBounds(600, 369, 70, 26);
         jpcPanel.add(btnSend);
 
+        // MIGHT HAVE BUG ---------------
+        tp.setSelectedIndex(tp.getTabCount()-1);
+        tabindex = tp.getSelectedIndex()+1;
+        System.out.println("tabindex : "+tabindex);
+        // MIGHT HAVE BUG ---------------
 
         // Action Listeners --------------------------------------------------------------------------------------------
 
@@ -180,6 +184,8 @@ public class JoinPrivateChat {
             taContent.setText("");
             GetSetData u = new GetSetData();
             out.println("Connection Established with "+u.getUsername());
+            out.println("username="+u.getUsername());
+//            tp.setTitleAt(tp.getSelectedIndex()-1,u.getUsername());
 
         }
         catch (UnknownHostException e) {
@@ -207,6 +213,21 @@ public class JoinPrivateChat {
                         socket.close();
                         break;
                     }
+
+                    // MIGHT HAVE BUG ---------------
+//                    System.out.println(msg);
+//                    System.out.println(msg.substring(0,9) + "--");
+                    try {
+                        if (msg.substring(0, 9).equals("username=")) {
+                            tp.setTitleAt(tabindex, "Private : "+msg.substring(9));
+                            continue;
+                        }
+                    }
+                    catch (Exception e){
+//                        System.out.println("short");
+                    }
+                    // MIGHT HAVE BUG ---------------
+
                     taContent.append(msg+ "\n");
                 }
             }

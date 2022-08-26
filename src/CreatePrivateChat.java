@@ -19,7 +19,7 @@ public class CreatePrivateChat {
     TextArea taContent;
     JTextField tfMessage;
 
-
+    int tabindex;
 
     CreatePrivateChat(JPanel cpcPanel, JTabbedPane tp){
 
@@ -94,6 +94,11 @@ public class CreatePrivateChat {
         btnSend.setBounds(600, 369, 70, 26);
         cpcPanel.add(btnSend);
 
+        // MIGHT HAVE BUG ---------------
+        tp.setSelectedIndex(tp.getTabCount()-1);
+        tabindex = tp.getSelectedIndex()+1;
+        System.out.println("tabindex : "+tabindex);
+        // MIGHT HAVE BUG ---------------
 
         // Action Listeners --------------------------------------------------------------------------------------------
 
@@ -184,6 +189,9 @@ public class CreatePrivateChat {
                 taContent.setText("");
                 GetSetData u = new GetSetData();
                 out.println("Connection Established with "+u.getUsername());
+                // MIGHT HAVE BUG ---------------
+                out.println("username="+u.getUsername());
+                // MIGHT HAVE BUG ---------------
 
             } catch (BindException ex){
                 Frame f = new Frame();
@@ -220,6 +228,22 @@ public class CreatePrivateChat {
                         break;
 
                     }
+
+                    // MIGHT HAVE BUG ---------------
+//                    System.out.println(msg);
+//                    System.out.println(msg.substring(0,9) + "--");
+                    try {
+                        if (msg.substring(0, 9).equals("username=")) {
+                            tp.setTitleAt(tabindex, "Private : "+msg.substring(9));
+                            continue;
+                        }
+                    }
+                    catch (Exception e){
+//                        System.out.println("short");
+                    }
+                    // MIGHT HAVE BUG ---------------
+
+
                     taContent.append(msg + "\n");
                 }
 
